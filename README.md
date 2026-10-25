@@ -1,80 +1,53 @@
-# AI Delivery & Fulfilment Orchestrator — Interactive Prototype
+# TAMCA · Delivery Recovery
 
-> **Netcompany IT Consultant Challenge 2026 (Round 1)**  
-> **Team TAMCA** · Proposal v2.3  
-> *"From alert to approved fix on one screen — AI drafts, people decide"*
+Approved interactive prototype for slide 6 of the TAMCA AI Delivery & Fulfilment proposal, Netcompany IT Consultant Challenge 2026.
 
----
+The experience follows one B2B order through three decisions: **Choose → Secure → Notify**, followed by its simulated delivery outcome. The internal Company A workspace sits beside the customer's phone. The phone receives its SMS only after account-manager approval.
 
-## 🎯 Executive Overview
+## Order #2004
 
-Company A distributes building materials across Denmark, Norway, and Sweden. Each market operates siloed systems, leading to delayed coordination between warehouses, retail stores, and transport. For B2B contractors, delivery shortfalls stall construction crews and damage long-term accounts.
+100 plasterboard sheets are due Tuesday at 07:00. Only 80 are reserved; 20 are missing. The site has a crane booked for 07:00.
 
-This interactive web application provides the **live visual prototype** accompanying **Slide 06 (Proposed Operating Model)** of TAMCA's proposal deck, allowing judges and stakeholders to experience firsthand how the **AI Delivery & Fulfilment Orchestrator** detects shortfalls early and empowers coordinators to resolve them in minutes.
+| Plan | Recovery | Cost | Conditions |
+| --- | --- | --- | --- |
+| A · Recommended | Transfer 20 sheets from Branch B using tonight's shuttle; branch arrival Monday 21:00 | €50 | Confirm stock and transport; keep the original delivery promise. |
+| B · Split delivery | 80 sheets at 07:00; 20 at 13:00 | €120 | Also confirm customer consent and a new crane slot; this changes the original promise. |
+| C · Wait | Replenishment on Thursday | €0 | Too late for Tuesday; approval is blocked. |
 
----
+Illustrative net savings are €150 for A and €80 for B, using €200 avoided failure cost, before technology costs. All data, AI output, confirmations, messages and delivery outcomes are simulated. No real SMS is sent and no operational system is written to.
 
-## 🚀 Key Features
+## Run
 
-### 1. Slide 06 Interactive Prototype (Core Showcase)
-* **High-Fidelity Replication:** 1:1 fidelity with the Netcompany Challenge deck exhibit.
-* **Order #2004 Live Simulation:** 100 plasterboard sheets (Stockholm) facing a 20-sheet shortfall.
-* **Dynamic Recovery Options:**
-  * **Option A (Recommended / Feasible):** Transfer 20 sheets from Branch B tonight (€50 recovery cost, arrives Mon 21:00).
-  * **Option B (Split):** 80 at 07:00; 20 at 13:00 (€120, violates contractor crane slot).
-  * **Option C (Wait):** Wait for Thursday supplier delivery (€0 direct cost, €200+ failed delivery penalty).
-* **Live Human-in-the-Loop Signoff:** Interactive approval button logs the resolution and triggers simulated dispatch.
-* **Simulated Customer Smartphone:** Displays real-time bilingual SMS in Swedish (*Company A Proffsservice*) alongside English reader translation.
-* **Impact Contrast:** Visualizes **16½ hours earlier detection** (Mon 14:00 vs Tue 06:30) and **~€150 net saving** per addressed incident.
-
-### 2. 5-Pillar Deductive Proposal Story
-* **Summary (Slide 01):** The 3 hero anchor numbers (~17-month payback, ~19% break-even vs 30% base case, 1 → 3 Nordic market scale).
-* **Identify (Slide 02–03):** Contractor economics (77–88% jobsite delivery priority, Swedish labor at €43.5/h) and 3-market diagnosis.
-* **Prioritise (Slide 04–05):** Why Swedish delivery & fulfilment is priority #1, and why material shortfall is the first exception to test.
-* **Solve (Slide 06–07):** Operating model and technical architecture.
-* **Scale (Slide 08–10):** Phase 1 Prove (4-week PoV, ~€80k) → Phase 2 MVP Launch → Phase 3 Measure & Scale.
-
-### 3. Dual-Layer Rule Architecture (Slide 07)
-* Visualizes the rule-bracketed architecture: **Existing Systems (Read-Only) → Rules Detect → AI Drafts → Rules Validate → People Approve → Execution**.
-* *"No system replaced; AI reads data, never acts alone."*
-* 4 Enterprise Safeguards and Cemex Go industry precedent benchmark.
-
-### 4. Interactive ROI & Sensitivity Calculator (Slide 09)
-* Live sliders for addressable recovery rate and baseline failure rate.
-* Real-time calculation of value bridge, net annual savings, and payback period.
-* Demonstrates why the ~19% break-even threshold justifies the €80k PoV before committing to full scale.
-
----
-
-## 🛠️ Technology Stack & Deployment
-
-* **Framework:** React 18, Vite 6
-* **Styling:** Tailwind CSS (Swiss/Enterprise minimalist design system)
-* **Icons:** Lucide React
-* **Deployment:** Pre-configured for automated continuous deployment on **Vercel** (`vercel.json` included).
-
----
-
-## 💻 Local Development
-
-```bash
-# Clone the repository
-git clone https://github.com/khiempg0605/Prototype-Proposal.git
-cd Prototype-Proposal
-
-# Install dependencies
-npm install
-
-# Start local development server
+```sh
+npm ci
 npm run dev
+```
 
-# Build for production
+## Build and deploy
+
+```sh
 npm run build
-
-# Preview production build locally
 npm run preview
 ```
 
----
+The project retains React 18 and Vite. `vercel.json` builds with `npm run build` and serves `dist/`.
 
-*Team TAMCA · Netcompany IT Consultant Challenge 2026*
+## Verify
+
+After building, run:
+
+```sh
+npm run check:ui
+```
+
+The browser check exercises all recovery plans, confirmation locks, customer consent, SMS timing, restart and mobile layouts against the built app. It requires a local Chrome/Chromium installation. Set `CHROME_BIN` to the browser executable when it is not in a standard macOS or Linux location. Screenshots and results are written to the ignored `qa/` directory.
+
+## Source
+
+- `src/App.jsx`: React shell and prototype lifecycle.
+- `src/prototype/runtime.js`: approved flow, system scene and customer-phone rendering.
+- `src/prototype/styles.css`: base layout and navy–white–amber palette.
+- `src/prototype/devices.css`: system-window and smartphone presentation.
+- `ops/check_ui.cjs`: browser verification of the production build.
+
+The prototype uses local SVGs and system fonts; runtime use does not depend on a font CDN or an AI service.
